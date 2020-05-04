@@ -21,32 +21,47 @@ namespace SnippetSharp
         private DataTable _snippetTable = null;
 
         private BindingSource _jobBS = null;
+        private string _lastDb;
+        private readonly NotifyIcon _notifyIcon = null;
 
         public MainForm()
         {
             InitializeComponent();
+            _notifyIcon = new NotifyIcon
+            {
+                Icon = Properties.Resources.items1,
+
+                Visible = true,
+                Text = "Snippets",
+                ContextMenu = new ContextMenu(new MenuItem[]
+               {
+                    new MenuItem("Exit", exitToolStripMenuItem_Click)
+               })
+            };
+            _notifyIcon.DoubleClick += (object sender, EventArgs e) =>
+            {
+                if (WindowState == FormWindowState.Minimized)
+                    WindowState = FormWindowState.Normal;
+            };
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SnippetSharp");
             string lastDb = key.GetValue("lastDb", "").ToString();
+            CreateDatabase();
             if (!String.IsNullOrEmpty(lastDb) && File.Exists(lastDb))
             {
                 // load the database we used before
                 try
                 {
                     _dataBase.ReadXml(lastDb);
+                    _lastDb = lastDb;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Cannot find file {lastDb}.");
-                    CreateDatabase();
                 }
-            }
-            else
-            {
-                CreateDatabase();
             }
         }
 
@@ -96,7 +111,7 @@ namespace SnippetSharp
             dgvDetail.DataSource = _jobBS;
 
             // set RTB data binding
-            richTextBox1.DataBindings.Add("Text", _jobBS, "CodeSnippet");
+            reSnippet.DataBindings.Add("Text", _jobBS, "CodeSnippet");
 
             // filter jobs according to the category
             _categoryBS.CurrentChanged += _categoryBS_CurrentChanged;
@@ -134,6 +149,7 @@ namespace SnippetSharp
                 if (res == DialogResult.OK)
                 {
                     _dataBase.ReadXml(od.FileName);
+                    _lastDb = od.FileName;
                 }
             }
         }
@@ -166,13 +182,14 @@ namespace SnippetSharp
                     _dataBase.WriteXml(sd.FileName);
                     RegistryKey key = Registry.CurrentUser.CreateSubKey(@"SOFTWARE\SnippetSharp");
                     key.SetValue("lastDb", sd.FileName);
+                    _lastDb = sd.FileName;
                 }
             }
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Close();
+            Application.Exit();
         }
 
         private void newJobToolStripMenuItem_Click(object sender, EventArgs e)
@@ -189,6 +206,22 @@ namespace SnippetSharp
         {
             var row = (DataRowView)_categoryBS.AddNew();
             row["DateCreated"] = DateTime.Now;
+        }
+
+        private void saveDatabaseToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            dgvCategory.EndEdit();
+            dgvDetail.EndEdit();
+            _dataBase.WriteXml(_lastDb);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!(e.CloseReason == CloseReason.WindowsShutDown || e.CloseReason == CloseReason.ApplicationExitCall))
+            {
+                e.Cancel = true;
+                WindowState = FormWindowState.Minimized;
+            }
         }
     }
 }
