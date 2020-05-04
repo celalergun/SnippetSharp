@@ -20,7 +20,7 @@ namespace SnippetSharp
         // jobs table and the binding source
         private DataTable _snippetTable = null;
 
-        private BindingSource _jobBS = null;
+        private BindingSource _snippetBS = null;
         private string _lastDb;
         private readonly NotifyIcon _notifyIcon = null;
 
@@ -43,6 +43,7 @@ namespace SnippetSharp
                 if (WindowState == FormWindowState.Minimized)
                     WindowState = FormWindowState.Normal;
             };
+            Icon = Properties.Resources.items1;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -106,12 +107,13 @@ namespace SnippetSharp
             _categoryBS.DataSource = _categoryTable;
             dgvCategory.DataSource = _categoryBS;
 
-            _jobBS = new BindingSource();
-            _jobBS.DataSource = _snippetTable;
-            dgvDetail.DataSource = _jobBS;
+            _snippetBS = new BindingSource();
+            _snippetBS.DataSource = _snippetTable;
+            dgvDetail.AutoGenerateColumns = false;
+            dgvDetail.DataSource = _snippetBS;
 
             // set RTB data binding
-            reSnippet.DataBindings.Add("Text", _jobBS, "CodeSnippet");
+            reSnippet.DataBindings.Add("Text", _snippetBS, "CodeSnippet");
 
             // filter jobs according to the category
             _categoryBS.CurrentChanged += _categoryBS_CurrentChanged;
@@ -123,10 +125,17 @@ namespace SnippetSharp
 
         private void _categoryBS_CurrentChanged(object sender, EventArgs e)
         {
+            string filterText = "";
             if (_categoryBS.Current == null)
-                _jobBS.Filter = "";
+                _snippetBS.Filter = filterText;
             else
-                _jobBS.Filter = "CategoryId=" + (_categoryBS.Current as DataRowView).Row["CategoryId"];
+            {
+                filterText = "CategoryId=" + (_categoryBS.Current as DataRowView).Row["CategoryId"];
+
+                if (!String.IsNullOrEmpty(textBoxSearch.Text))
+                    filterText += $" and Description LIKE '%{textBoxSearch.Text}%'";
+                _snippetBS.Filter = filterText;
+            }
         }
 
         private void stayOnTopToolStripMenuItem_Click(object sender, EventArgs e)
@@ -172,6 +181,7 @@ namespace SnippetSharp
         {
             dgvCategory.EndEdit();
             dgvDetail.EndEdit();
+            dgvDetail.Focus();
             using (SaveFileDialog sd = new SaveFileDialog())
             {
                 sd.Filter = "XML files (*.xml)|*.xml";
@@ -197,7 +207,7 @@ namespace SnippetSharp
             if (_categoryBS.Current == null)
                 return;
 
-            var row = (DataRowView)_jobBS.AddNew();
+            var row = (DataRowView)_snippetBS.AddNew();
             row["CategoryID"] = (_categoryBS.Current as DataRowView).Row["CategoryID"];
             row["DateCreated"] = DateTime.Now;
         }
@@ -212,6 +222,8 @@ namespace SnippetSharp
         {
             dgvCategory.EndEdit();
             dgvDetail.EndEdit();
+            dgvDetail.Focus();
+            Application.DoEvents();
             _dataBase.WriteXml(_lastDb);
         }
 
@@ -222,6 +234,11 @@ namespace SnippetSharp
                 e.Cancel = true;
                 WindowState = FormWindowState.Minimized;
             }
+        }
+
+        private void textBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            _categoryBS_CurrentChanged(sender, e);
         }
     }
 }

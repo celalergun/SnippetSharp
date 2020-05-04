@@ -52,6 +52,8 @@
             this.CategoryIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCategory)).BeginInit();
@@ -68,7 +70,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(1017, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1331, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -186,8 +188,8 @@
             this.reSnippet.Location = new System.Drawing.Point(471, 324);
             this.reSnippet.Name = "reSnippet";
             this.reSnippet.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.reSnippet.Size = new System.Drawing.Size(539, 425);
-            this.reSnippet.TabIndex = 6;
+            this.reSnippet.Size = new System.Drawing.Size(853, 425);
+            this.reSnippet.TabIndex = 3;
             this.reSnippet.Text = "";
             this.reSnippet.WordWrap = false;
             // 
@@ -202,11 +204,12 @@
             this.Column5,
             this.DescriptionColumn,
             this.Column6});
-            this.dgvDetail.Location = new System.Drawing.Point(471, 26);
+            this.dgvDetail.Location = new System.Drawing.Point(471, 59);
             this.dgvDetail.Name = "dgvDetail";
             this.dgvDetail.RowHeadersWidth = 62;
-            this.dgvDetail.Size = new System.Drawing.Size(537, 292);
-            this.dgvDetail.TabIndex = 5;
+            this.dgvDetail.Size = new System.Drawing.Size(851, 259);
+            this.dgvDetail.TabIndex = 2;
+            this.dgvDetail.TabStop = false;
             // 
             // Column4
             // 
@@ -214,6 +217,7 @@
             this.Column4.HeaderText = "DetailId";
             this.Column4.MinimumWidth = 2;
             this.Column4.Name = "Column4";
+            this.Column4.Visible = false;
             this.Column4.Width = 2;
             // 
             // Column5
@@ -222,6 +226,7 @@
             this.Column5.HeaderText = "CategoryId";
             this.Column5.MinimumWidth = 2;
             this.Column5.Name = "Column5";
+            this.Column5.Visible = false;
             this.Column5.Width = 2;
             // 
             // DescriptionColumn
@@ -230,7 +235,7 @@
             this.DescriptionColumn.HeaderText = "Description";
             this.DescriptionColumn.MinimumWidth = 8;
             this.DescriptionColumn.Name = "DescriptionColumn";
-            this.DescriptionColumn.Width = 400;
+            this.DescriptionColumn.Width = 600;
             // 
             // Column6
             // 
@@ -256,6 +261,7 @@
             this.dgvCategory.RowHeadersWidth = 62;
             this.dgvCategory.Size = new System.Drawing.Size(457, 721);
             this.dgvCategory.TabIndex = 4;
+            this.dgvCategory.TabStop = false;
             // 
             // CategoryIdColumn
             // 
@@ -263,6 +269,7 @@
             this.CategoryIdColumn.HeaderText = "CategoryId";
             this.CategoryIdColumn.MinimumWidth = 2;
             this.CategoryIdColumn.Name = "CategoryIdColumn";
+            this.CategoryIdColumn.Visible = false;
             this.CategoryIdColumn.Width = 2;
             // 
             // Column1
@@ -281,11 +288,30 @@
             this.Column2.Name = "Column2";
             this.Column2.Width = 120;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(472, 32);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "&Filter";
+            // 
+            // textBoxSearch
+            // 
+            this.textBoxSearch.Location = new System.Drawing.Point(531, 29);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(604, 20);
+            this.textBoxSearch.TabIndex = 1;
+            this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1017, 756);
+            this.ClientSize = new System.Drawing.Size(1331, 756);
+            this.Controls.Add(this.textBoxSearch);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.reSnippet);
             this.Controls.Add(this.dgvDetail);
             this.Controls.Add(this.dgvCategory);
@@ -319,17 +345,19 @@
         private System.Windows.Forms.ToolStripMenuItem newJobToolStripMenuItem;
         private System.Windows.Forms.RichTextBox reSnippet;
         private System.Windows.Forms.DataGridView dgvDetail;
+        private System.Windows.Forms.DataGridView dgvCategory;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem stayOnTopToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveDatabaseToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn DescriptionColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridView dgvCategory;
-        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stayOnTopToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn CategoryIdColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
-        private System.Windows.Forms.ToolStripMenuItem saveDatabaseToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBoxSearch;
     }
 }
 
