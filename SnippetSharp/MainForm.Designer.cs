@@ -41,7 +41,7 @@
             this.kategoriToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.yeniKategoriEkleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.snippetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newJobToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newSnippetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reSnippet = new System.Windows.Forms.RichTextBox();
             this.dgvDetail = new System.Windows.Forms.DataGridView();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -166,18 +166,18 @@
             // snippetToolStripMenuItem
             // 
             this.snippetToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newJobToolStripMenuItem});
+            this.newSnippetToolStripMenuItem});
             this.snippetToolStripMenuItem.Name = "snippetToolStripMenuItem";
             this.snippetToolStripMenuItem.Size = new System.Drawing.Size(59, 22);
             this.snippetToolStripMenuItem.Text = "Snippet";
             // 
             // newJobToolStripMenuItem
             // 
-            this.newJobToolStripMenuItem.Name = "newJobToolStripMenuItem";
-            this.newJobToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
-            this.newJobToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
-            this.newJobToolStripMenuItem.Text = "New snippet";
-            this.newJobToolStripMenuItem.Click += new System.EventHandler(this.newJobToolStripMenuItem_Click);
+            this.newSnippetToolStripMenuItem.Name = "newJobToolStripMenuItem";
+            this.newSnippetToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
+            this.newSnippetToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
+            this.newSnippetToolStripMenuItem.Text = "New snippet";
+            this.newSnippetToolStripMenuItem.Click += new System.EventHandler(this.newJobToolStripMenuItem_Click);
             // 
             // reSnippet
             // 
@@ -342,7 +342,7 @@
         private System.Windows.Forms.ToolStripMenuItem kategoriToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem yeniKategoriEkleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem snippetToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newJobToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newSnippetToolStripMenuItem;
         private System.Windows.Forms.RichTextBox reSnippet;
         private System.Windows.Forms.DataGridView dgvDetail;
         private System.Windows.Forms.DataGridView dgvCategory;

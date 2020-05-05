@@ -127,16 +127,30 @@ namespace SnippetSharp
         private void _categoryBS_CurrentChanged(object sender, EventArgs e)
         {
             string filterText = "";
+            //check to see if there is any Category selected...
             if (_categoryBS.Current == null)
+            {
                 _snippetBS.Filter = filterText;
+                EnableOrDisableUIItems(enabled: false);
+            }
+
             else
             {
+                EnableOrDisableUIItems(enabled: true);
                 filterText = "CategoryId=" + (_categoryBS.Current as DataRowView).Row["CategoryId"];
 
                 if (!String.IsNullOrEmpty(textBoxSearch.Text))
                     filterText += $" and Description LIKE '%{textBoxSearch.Text}%'";
                 _snippetBS.Filter = filterText;
             }
+        }
+
+        private void EnableOrDisableUIItems(bool enabled)
+        {
+            dgvDetail.Enabled = enabled;
+            textBoxSearch.Enabled = enabled;
+            reSnippet.Enabled = enabled;
+            newSnippetToolStripMenuItem.Enabled = enabled;
         }
 
         private void stayOnTopToolStripMenuItem_Click(object sender, EventArgs e)
