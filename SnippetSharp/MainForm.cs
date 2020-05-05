@@ -2,7 +2,9 @@
 using System;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 
 namespace SnippetSharp
@@ -17,7 +19,7 @@ namespace SnippetSharp
 
         private BindingSource _categoryBS = null;
 
-        // jobs table and the binding source
+        // Snippets table and the binding source
         private DataTable _snippetTable = null;
 
         private BindingSource _snippetBS = null;
@@ -69,7 +71,7 @@ namespace SnippetSharp
         private void CreateDatabase()
         {
             // Create a dataset to hold our database in memory
-            _dataBase = new DataSet("JobsDatabase");
+            _dataBase = new DataSet("SnippetsDatabase");
 
             // Create a category table
             _categoryTable = new DataTable("Categories");
@@ -100,8 +102,8 @@ namespace SnippetSharp
             _dataBase.Tables.Add(_snippetTable);
 
             // Set table relations
-            _dataBase.Relations.Add("CategoryJob", _categoryTable.Columns["CategoryId"], _snippetTable.Columns["CategoryId"]);
-            _dataBase.Relations["CategoryJob"].Nested = true;
+            _dataBase.Relations.Add("CategorySnippet", _categoryTable.Columns["CategoryId"], _snippetTable.Columns["CategoryId"]);
+            _dataBase.Relations["CategorySnippet"].Nested = true;
 
             // Create a binding source and set it as a datasource for our grid
             _categoryBS = new BindingSource();
@@ -116,7 +118,7 @@ namespace SnippetSharp
             // set RTB data binding
             reSnippet.DataBindings.Add("Text", _snippetBS, "CodeSnippet");
 
-            // filter jobs according to the category
+            // filter Snippets according to the category
             _categoryBS.CurrentChanged += _categoryBS_CurrentChanged;
 
             // make grids faster
@@ -133,7 +135,6 @@ namespace SnippetSharp
                 _snippetBS.Filter = filterText;
                 EnableOrDisableUIItems(enabled: false);
             }
-
             else
             {
                 EnableOrDisableUIItems(enabled: true);
@@ -218,7 +219,7 @@ namespace SnippetSharp
             Application.Exit();
         }
 
-        private void newJobToolStripMenuItem_Click(object sender, EventArgs e)
+        private void newSnippetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_categoryBS.Current == null)
                 return;
@@ -255,6 +256,49 @@ namespace SnippetSharp
         private void textBoxSearch_TextChanged(object sender, EventArgs e)
         {
             _categoryBS_CurrentChanged(sender, e);
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            reSnippet.Clear();
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // pasting clipboard content into the richedit control.
+            // first we will count the space characters from the beginning of every line to trim the spaces
+            // from the beginning of the lines to keep the indentation
+            string clp = Clipboard.GetText();
+            string[] lines = clp.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            int minSpaces = Int32.MaxValue;
+            foreach (var l in lines)
+            {
+                int spaceCount = 0;
+                if (l.Length == 0)
+                    continue;
+                for (int i = 0; i < l.Length; i++)
+                {
+                    if (Char.IsWhiteSpace(l[i]))
+                        spaceCount++;
+                    else
+                        break;
+                }
+                if (spaceCount < minSpaces)
+                    minSpaces = spaceCount;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            string spacesToBeDeleted = new string(' ', minSpaces);
+            foreach (var l in lines)
+            {
+                string s;
+                if (l.StartsWith(spacesToBeDeleted))
+                    s = l.Substring(spacesToBeDeleted.Length);
+                else
+                    s = l;
+                sb.Append(s + Environment.NewLine);
+            }
+            reSnippet.Text = sb.ToString();
         }
     }
 }
