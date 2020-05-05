@@ -80,7 +80,8 @@ namespace SnippetSharp
             _categoryTable.PrimaryKey = new DataColumn[] { _categoryTable.Columns["CategoryId"] };
             // Make it autoincrement, 1 by 1
             _categoryTable.Columns["CategoryId"].AutoIncrement = true;
-            _categoryTable.Columns["CategoryId"].AutoIncrementSeed = 1;
+            _categoryTable.Columns["CategoryId"].AutoIncrementSeed = 2;
+            _categoryTable.Columns["CategoryId"].AutoIncrementStep = 2;
             // Add the table to the database
             _dataBase.Tables.Add(_categoryTable);
 
@@ -94,8 +95,8 @@ namespace SnippetSharp
 
             // Fantasize with auto increment seed, starts from 100, increases 3 by 3
             _snippetTable.Columns["SnippetId"].AutoIncrement = true;
-            _snippetTable.Columns["SnippetId"].AutoIncrementSeed = 100;
-            _snippetTable.Columns["SnippetId"].AutoIncrementStep = 3;
+            _snippetTable.Columns["SnippetId"].AutoIncrementSeed = 101;
+            _snippetTable.Columns["SnippetId"].AutoIncrementStep = 2;
             _dataBase.Tables.Add(_snippetTable);
 
             // Set table relations
@@ -145,7 +146,8 @@ namespace SnippetSharp
 
         private void NewDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CreateDatabase();
+            _snippetTable.Clear();
+            _categoryTable.Clear();
         }
 
         private void OpenDatabaseToolStripMenuItem_Click(object sender, EventArgs e)
