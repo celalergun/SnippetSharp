@@ -271,11 +271,18 @@ namespace SnippetSharp
             string clp = Clipboard.GetText();
             string[] lines = clp.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             int minSpaces = Int32.MaxValue;
-            foreach (var l in lines)
+            for (int j = 0; j < lines.Length; j++)
             {
+                string l = lines[j];
                 int spaceCount = 0;
+                // if this line is an empty line, don't take it into consideration
                 if (l.Length == 0)
                     continue;
+
+                // if this is the first line and does not start with spaces, don't take it into consideration too
+                if (j == 0 && !Char.IsWhiteSpace(l[0]))
+                    continue;
+
                 for (int i = 0; i < l.Length; i++)
                 {
                     if (Char.IsWhiteSpace(l[i]))
