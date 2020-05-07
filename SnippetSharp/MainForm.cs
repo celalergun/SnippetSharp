@@ -2,7 +2,6 @@
 using System;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
@@ -66,6 +65,7 @@ namespace SnippetSharp
                     MessageBox.Show($"Cannot find file {lastDb}.");
                 }
             }
+            runAtStartupToolStripMenuItem.Checked = IsSetToRunAtStartUp();
         }
 
         private void CreateDatabase()
@@ -306,6 +306,60 @@ namespace SnippetSharp
                 sb.Append(s + Environment.NewLine);
             }
             reSnippet.Text = sb.ToString();
+        }
+
+        private bool IsSetToRunAtStartUp()
+        {
+            string exeName = Assembly.GetExecutingAssembly().Location;
+            bool set = false;
+            RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
+            var names = reg.GetValueNames();
+            for (int i = 0; i < names.Length; i++)
+            {
+                string path = (string)reg.GetValue(names[i]);
+                if (path.Equals(exeName, StringComparison.OrdinalIgnoreCase))
+                {
+                    set = true;
+                    break;
+                }
+            }
+            reg.Close();
+            return set;
+        }
+
+        private void runAtStartupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var isSet = IsSetToRunAtStartUp();
+            string exeName = Assembly.GetExecutingAssembly().Location;
+            RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
+
+            if (isSet)
+            {
+                // remove from run
+                var names = reg.GetValueNames();
+                for (int i = 0; i < names.Length; i++)
+                {
+                    string path = (string)reg.GetValue(names[i]);
+                    if (path.Equals(exeName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        try
+                        {
+                            reg.DeleteValue(names[i]);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Unable to change registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // add to run
+                reg.SetValue("SnippetSharp", exeName);
+            }
+            reg.Close();
         }
     }
 }
