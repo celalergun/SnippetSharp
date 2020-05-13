@@ -25,6 +25,8 @@ namespace SnippetSharp
         private string _lastDb;
         private readonly NotifyIcon _notifyIcon = null;
 
+        private string _exeName = Assembly.GetExecutingAssembly().Location;
+
         public MainForm()
         {
             InitializeComponent();
@@ -310,63 +312,65 @@ namespace SnippetSharp
 
         private bool IsSetToRunAtStartUp()
         {
-            string exeName = Assembly.GetExecutingAssembly().Location;
             bool set = false;
-            RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
-            var names = reg.GetValueNames();
-            for (int i = 0; i < names.Length; i++)
+
+            using (RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
             {
-                string path = (string)reg.GetValue(names[i]);
-                if (path.Equals(exeName, StringComparison.OrdinalIgnoreCase))
+                var names = reg.GetValueNames();
+                for (int i = 0; i < names.Length; i++)
                 {
-                    set = true;
-                    break;
+                    string path = (string)reg.GetValue(names[i]);
+                    if (path.Equals(_exeName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        set = true;
+                        break;
+                    }
                 }
+                reg.Close();
             }
-            reg.Close();
             return set;
         }
 
         private void runAtStartupToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var isSet = IsSetToRunAtStartUp();
-            string exeName = Assembly.GetExecutingAssembly().Location;
-            RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
-
-            if (isSet)
+            using (RegistryKey reg = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run"))
             {
-                // remove from run
-                var names = reg.GetValueNames();
-                for (int i = 0; i < names.Length; i++)
+                if (isSet)
                 {
-                    string path = (string)reg.GetValue(names[i]);
-                    if (path.Equals(exeName, StringComparison.OrdinalIgnoreCase))
+                    // remove from run
+                    var names = reg.GetValueNames();
+                    for (int i = 0; i < names.Length; i++)
                     {
-                        try
+                        string path = (string)reg.GetValue(names[i]);
+                        if (path.Equals(_exeName, StringComparison.OrdinalIgnoreCase))
                         {
-                            reg.DeleteValue(names[i]);
+                            try
+                            {
+                                reg.DeleteValue(names[i]);
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show($"Unable to modify the registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+                            break;
                         }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Unable to modify the registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        break;
                     }
                 }
-            }
-            else
-            {
-                // add to run
-                try
+                else
                 {
-                    reg.SetValue("SnippetSharp", exeName);
+                    // add to run
+                    try
+                    {
+                        reg.SetValue("SnippetSharp", _exeName);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Unable to modify the registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Unable to modify the registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                reg.Close();
             }
-            reg.Close();
         }
     }
 }
