@@ -239,8 +239,12 @@ namespace SnippetSharp
 
         private void saveDatabaseToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
+            // force dataGridView controls to commit their changes into dataset
             dgvCategory.EndEdit();
             dgvDetail.EndEdit();
+            // this is a little hack to commit changes in the rich text control
+            // rich text control updates its properties when it loses focus
+            // so we are focusing to something else :)
             dgvDetail.Focus();
             Application.DoEvents();
             _dataBase.WriteXml(_lastDb);
@@ -248,8 +252,10 @@ namespace SnippetSharp
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // check if Windows is shutting down or user clicked on the exit menu item(s)
             if (!(e.CloseReason == CloseReason.WindowsShutDown || e.CloseReason == CloseReason.ApplicationExitCall))
             {
+                // minimize the form if the user clicked on the X button, pressed Alt+F4 etc.
                 e.Cancel = true;
                 WindowState = FormWindowState.Minimized;
             }
@@ -349,7 +355,7 @@ namespace SnippetSharp
                             {
                                 reg.DeleteValue(names[i]);
                             }
-                            catch (Exception ex)
+                            catch (UnauthorizedAccessException ex)
                             {
                                 MessageBox.Show($"Unable to modify the registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
@@ -364,7 +370,7 @@ namespace SnippetSharp
                     {
                         reg.SetValue("SnippetSharp", _exeName);
                     }
-                    catch (Exception ex)
+                    catch (UnauthorizedAccessException ex)
                     {
                         MessageBox.Show($"Unable to modify the registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
