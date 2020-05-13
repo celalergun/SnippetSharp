@@ -348,7 +348,7 @@ namespace SnippetSharp
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show($"Unable to change registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show($"Unable to modify the registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                         break;
                     }
@@ -357,7 +357,14 @@ namespace SnippetSharp
             else
             {
                 // add to run
-                reg.SetValue("SnippetSharp", exeName);
+                try
+                {
+                    reg.SetValue("SnippetSharp", exeName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Unable to modify the registry. Try running this application as Administrator\r\n{ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             reg.Close();
         }
