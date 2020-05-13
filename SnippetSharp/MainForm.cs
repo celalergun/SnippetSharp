@@ -276,7 +276,7 @@ namespace SnippetSharp
                 string l = lines[j];
                 int spaceCount = 0;
                 // if this line is an empty line, don't take it into consideration
-                if (l.Length == 0)
+                if (l.Trim().Length == 0)
                     continue;
 
                 // if this is the first line and does not start with spaces, don't take it into consideration too
