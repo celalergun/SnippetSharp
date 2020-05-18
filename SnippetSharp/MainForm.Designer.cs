@@ -59,10 +59,15 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.menuStrip1.SuspendLayout();
             this.snippetContextMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCategory)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -76,7 +81,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(1331, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1326, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -150,14 +155,14 @@
             // 
             this.stayOnTopToolStripMenuItem.CheckOnClick = true;
             this.stayOnTopToolStripMenuItem.Name = "stayOnTopToolStripMenuItem";
-            this.stayOnTopToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.stayOnTopToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.stayOnTopToolStripMenuItem.Text = "Stay on top";
             this.stayOnTopToolStripMenuItem.Click += new System.EventHandler(this.stayOnTopToolStripMenuItem_Click);
             // 
             // runAtStartupToolStripMenuItem
             // 
             this.runAtStartupToolStripMenuItem.Name = "runAtStartupToolStripMenuItem";
-            this.runAtStartupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.runAtStartupToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.runAtStartupToolStripMenuItem.Text = "Run at startup";
             this.runAtStartupToolStripMenuItem.Click += new System.EventHandler(this.runAtStartupToolStripMenuItem_Click);
             // 
@@ -189,7 +194,7 @@
             // 
             this.newSnippetToolStripMenuItem.Name = "newSnippetToolStripMenuItem";
             this.newSnippetToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.S)));
-            this.newSnippetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newSnippetToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.newSnippetToolStripMenuItem.Text = "New snippet";
             this.newSnippetToolStripMenuItem.Click += new System.EventHandler(this.newSnippetToolStripMenuItem_Click);
             // 
@@ -200,10 +205,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.reSnippet.ContextMenuStrip = this.snippetContextMenu;
             this.reSnippet.Font = new System.Drawing.Font("Consolas", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.reSnippet.Location = new System.Drawing.Point(471, 324);
+            this.reSnippet.Location = new System.Drawing.Point(3, 3);
             this.reSnippet.Name = "reSnippet";
             this.reSnippet.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedBoth;
-            this.reSnippet.Size = new System.Drawing.Size(853, 425);
+            this.reSnippet.Size = new System.Drawing.Size(836, 346);
             this.reSnippet.TabIndex = 3;
             this.reSnippet.Text = "";
             this.reSnippet.WordWrap = false;
@@ -233,7 +238,8 @@
             // dgvDetail
             // 
             this.dgvDetail.AllowUserToAddRows = false;
-            this.dgvDetail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dgvDetail.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvDetail.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDetail.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -241,10 +247,10 @@
             this.Column5,
             this.DescriptionColumn,
             this.Column6});
-            this.dgvDetail.Location = new System.Drawing.Point(471, 59);
+            this.dgvDetail.Location = new System.Drawing.Point(3, 41);
             this.dgvDetail.Name = "dgvDetail";
             this.dgvDetail.RowHeadersWidth = 62;
-            this.dgvDetail.Size = new System.Drawing.Size(851, 259);
+            this.dgvDetail.Size = new System.Drawing.Size(836, 191);
             this.dgvDetail.TabIndex = 2;
             this.dgvDetail.TabStop = false;
             // 
@@ -296,7 +302,7 @@
             this.dgvCategory.MultiSelect = false;
             this.dgvCategory.Name = "dgvCategory";
             this.dgvCategory.RowHeadersWidth = 62;
-            this.dgvCategory.Size = new System.Drawing.Size(457, 721);
+            this.dgvCategory.Size = new System.Drawing.Size(457, 595);
             this.dgvCategory.TabIndex = 4;
             this.dgvCategory.TabStop = false;
             // 
@@ -328,7 +334,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(472, 32);
+            this.label1.Location = new System.Drawing.Point(17, 14);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(29, 13);
             this.label1.TabIndex = 0;
@@ -336,21 +342,40 @@
             // 
             // textBoxSearch
             // 
-            this.textBoxSearch.Location = new System.Drawing.Point(531, 29);
+            this.textBoxSearch.Location = new System.Drawing.Point(64, 11);
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(604, 20);
             this.textBoxSearch.TabIndex = 1;
             this.textBoxSearch.TextChanged += new System.EventHandler(this.textBoxSearch_TextChanged);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(472, 27);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.dgvDetail);
+            this.splitContainer1.Panel1.Controls.Add(this.label1);
+            this.splitContainer1.Panel1.Controls.Add(this.textBoxSearch);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.reSnippet);
+            this.splitContainer1.Size = new System.Drawing.Size(842, 591);
+            this.splitContainer1.SplitterDistance = 235;
+            this.splitContainer1.TabIndex = 5;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1331, 756);
-            this.Controls.Add(this.textBoxSearch);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.reSnippet);
-            this.Controls.Add(this.dgvDetail);
+            this.ClientSize = new System.Drawing.Size(1326, 630);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.dgvCategory);
             this.Controls.Add(this.menuStrip1);
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -363,6 +388,11 @@
             this.snippetContextMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvDetail)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCategory)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -400,6 +430,7 @@
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runAtStartupToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
 
